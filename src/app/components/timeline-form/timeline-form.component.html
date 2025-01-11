@@ -1,0 +1,176 @@
+<form [formGroup]="timelineForm" class="mat-elevation-z2" style="padding: 1rem">
+  <!-- Title Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>Timeline Title</mat-expansion-panel-header>
+    <div formGroupName="title">
+      <!-- Title Text -->
+      <div
+        formGroupName="text"
+        style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill" style="min-width: 300px">
+          <mat-label>Headline</mat-label>
+          <input matInput formControlName="headline" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="flex: 1">
+          <mat-label>Text</mat-label>
+          <textarea matInput rows="3" formControlName="text"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- Title Media -->
+    <div
+      formGroupName="media"
+      style="display: flex; gap: 1rem; flex-wrap: wrap"
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Media URL</mat-label>
+        <input matInput formControlName="url" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Caption</mat-label>
+        <input matInput formControlName="caption" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Credit</mat-label>
+        <input matInput formControlName="credit" />
+      </mat-form-field>
+      <b>OR</b>
+      <button (click)="uploadFile.click()" mat-raised-button color="primary">
+        Upload Media
+      </button>
+      <input
+        id="fileUpload-title"
+        #uploadFile
+        (change)="onFileUpload($event, -1)"
+        type="file"
+        style="display: none"
+      />
+    </div>
+  </mat-expansion-panel>
+
+  <hr style="margin: 1rem 0" />
+
+  <!-- Events Array -->
+  <h3>
+    Events
+    <button mat-icon-button color="primary" type="button" (click)="addEvent()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </h3>
+  <mat-accordion formArrayName="events" style="margin-top: 1rem">
+    <mat-expansion-panel
+      *ngFor="let eventGroup of events.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{
+            eventGroup.get("text.headline")?.value
+              ? eventGroup.get("text.headline")?.value
+              : "Event #" + (i + 1)
+          }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Date Range Picker -->
+      <div
+        formGroupName="date_range"
+        style="display: flex; flex-direction: column; gap: 1rem"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Event Date Range</mat-label>
+          <mat-date-range-input [rangePicker]="dateRangePicker">
+            <input
+              matStartDate
+              placeholder="Start date"
+              formControlName="start_date"
+            />
+            <input
+              matEndDate
+              placeholder="End date"
+              formControlName="end_date"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dateRangePicker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+
+      <!-- Event Text -->
+      <div
+        formGroupName="text"
+        style="display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Event Headline</mat-label>
+          <input matInput formControlName="headline" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="flex: 1">
+          <mat-label>Event Text</mat-label>
+          <textarea matInput rows="3" formControlName="text"></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Event Media -->
+      <div
+        formGroupName="media"
+        style="display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Media URL</mat-label>
+          <input matInput formControlName="url" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Caption</mat-label>
+          <input matInput formControlName="caption" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Credit</mat-label>
+          <input matInput formControlName="credit" />
+        </mat-form-field>
+        <b>OR</b>
+        <button (click)="uploadFile.click()" mat-raised-button color="primary">
+          Upload Media
+        </button>
+        <input
+          id="fileUpload-{{ i }}"
+          #uploadFile
+          (change)="onFileUpload($event, i)"
+          type="file"
+          style="display: none"
+        />
+      </div>
+      <mat-action-row>
+        <button
+          class="float-end"
+          mat-icon-button
+          matTooltip="Remove this event"
+          type="button"
+          (click)="removeEvent(i); $event.stopPropagation()"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- Submit Button -->
+  <div style="margin-top: 1rem">
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit"
+      style="width: 100%"
+      (click)="submitTimeline()"
+    >
+      Start Journey
+    </button>
+  </div>
+</form>

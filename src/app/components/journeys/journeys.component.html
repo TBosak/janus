@@ -1,0 +1,76 @@
+<mat-accordion multi>
+  <!-- Outer Accordion: Each Timeline -->
+  <mat-expansion-panel *ngFor="let timeline of journeys; let i = index">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ timeline.title.text.headline }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ timeline.title.text.text | slice : 0 : 50 }}...
+      </mat-panel-description>
+
+      <!-- Apply Button in Collapsed State -->
+      <button
+        mat-icon-button
+        color="primary"
+        matTooltip="Apply this timeline"
+        (click)="applyLine(timeline)"
+        (click)="$event.stopPropagation()"
+      >
+        <mat-icon>check_circle</mat-icon>
+      </button>
+
+      <!-- Delete Button in Collapsed State -->
+      <button
+        mat-icon-button
+        color="warn"
+        matTooltip="Delete this timeline"
+        (click)="confirmDelete(timeline.id, i, $event)"
+        (click)="$event.stopPropagation()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-expansion-panel-header>
+
+    <div>
+      <h3>{{ timeline.title.text.text }}</h3>
+      <div *ngIf="timeline.title.media.url">
+        <img
+          [src]="timeline.title.media.url"
+          alt="Timeline media"
+          style="max-width: 100%; margin-bottom: 1rem"
+        />
+        <p>{{ timeline.title.media.caption }}</p>
+        <small [innerHTML]="timeline.title.media.credit"></small>
+      </div>
+    </div>
+
+    <!-- Inner Accordion: Timeline Events -->
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let event of timeline.events">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ event.text.headline }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ event.start_date.year }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div>
+          <p [innerHTML]="event.text.text"></p>
+          <!-- Event Media -->
+          <div *ngIf="event.media.url">
+            <img
+              [src]="event.media.url"
+              alt="Event media"
+              style="max-width: 100%; margin-bottom: 1rem"
+            />
+            <p>{{ event.media.caption }}</p>
+            <small [innerHTML]="event.media.credit"></small>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-expansion-panel>
+</mat-accordion>

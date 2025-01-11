@@ -1,0 +1,14 @@
+<mat-tab-group>
+  <mat-tab label="New Journey"
+    ><app-timeline-form></app-timeline-form>
+  </mat-tab>
+  <mat-tab *ngIf="journey | async" label="Edit Journey"
+    ><app-timeline-edit [timeline]="journey | async"></app-timeline-edit>
+  </mat-tab>
+  <mat-tab label="Journeys">
+    <app-journeys
+      (journeySelected)="selectedJourney.emit($event)"
+    ></app-journeys>
+  </mat-tab>
+  <mat-tab label="Export"> </mat-tab>
+</mat-tab-group>

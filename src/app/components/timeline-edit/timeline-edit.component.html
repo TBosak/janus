@@ -1,0 +1,116 @@
+<form [formGroup]="timelineForm" class="mat-elevation-z2" style="padding: 1rem">
+  <!-- Title Section -->
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>Timeline Title</mat-expansion-panel-header>
+    <div formGroupName="title">
+      <div
+        formGroupName="media"
+        style="display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Media URL</mat-label>
+          <input matInput formControlName="url" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Caption</mat-label>
+          <input matInput formControlName="caption" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Credit</mat-label>
+          <input matInput formControlName="credit" />
+        </mat-form-field>
+      </div>
+
+      <div
+        formGroupName="text"
+        style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill" style="min-width: 300px">
+          <mat-label>Headline</mat-label>
+          <input matInput formControlName="headline" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="flex: 1">
+          <mat-label>Text</mat-label>
+          <textarea matInput rows="3" formControlName="text"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <hr style="margin: 1rem 0" />
+
+  <!-- Events -->
+  <h3>Events</h3>
+  <mat-accordion formArrayName="events">
+    <mat-expansion-panel
+      *ngFor="let eventGroup of events?.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title> Event #{{ i + 1 }} </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div formGroupName="date_range">
+        <mat-form-field appearance="fill">
+          <mat-label>Start Date</mat-label>
+          <input matInput formControlName="start_date" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>End Date</mat-label>
+          <input matInput formControlName="end_date" />
+        </mat-form-field>
+      </div>
+
+      <div
+        formGroupName="text"
+        style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Event Headline</mat-label>
+          <input matInput formControlName="headline" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="flex: 1">
+          <mat-label>Event Text</mat-label>
+          <textarea matInput rows="3" formControlName="text"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div
+        formGroupName="media"
+        style="display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Media URL</mat-label>
+          <input matInput formControlName="url" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Caption</mat-label>
+          <input matInput formControlName="caption" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Credit</mat-label>
+          <input matInput formControlName="credit" />
+        </mat-form-field>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div style="margin-top: 1rem">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="addEvent()"
+    >
+      Add Event
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit"
+      (click)="saveTimeline()"
+    >
+      Save
+    </button>
+  </div>
+</form>
