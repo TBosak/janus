@@ -1,3 +1,9 @@
+<h1 align="center">
+<img height="250em" width="250em" src="https://raw.githubusercontent.com/TBosak/janus/refs/heads/main/public/janus.svg"/>
+  <br/>
+Janus
+</h1>
+
 ## 🏃 Running locally
 
 ### 🍞 Bun installation <sup>Visit [bun.sh](https://bun.sh/) for more info</sup>
