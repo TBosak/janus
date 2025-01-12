@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { FileUploadService } from '../../services/file-upload.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TimelineFormComponent implements OnInit {
   timelineForm!: FormGroup;
-
+  titleUrl: string = '';
+  @Output() timelineCreated: EventEmitter<any> = new EventEmitter();
   constructor(
     public fb: FormBuilder,
     public fileUploadService: FileUploadService,
@@ -71,9 +72,28 @@ export class TimelineFormComponent implements OnInit {
       this.fileUploadService.uploadFile(file).subscribe((response: any) => {
         const fileUrl = response.url; // Assume API responds with the file URL
         if (index !== -1) {
-          this.events.at(index).get('media.url')?.setValue(fileUrl);
+          // Update the media URL for the event at the specified index
+          const eventMediaControl = this.events.at(index).get('media.url');
+          if (eventMediaControl) {
+            eventMediaControl.setValue(fileUrl);
+          } else {
+            console.error(
+              `Media control for event at index ${index} not found.`
+            );
+          }
         } else {
-          this.timelineForm.get('title.media.url')?.setValue(fileUrl);
+          // Update the media URL for the title
+          this.titleUrl = fileUrl;
+          const titleMediaControl = this.timelineForm.get([
+            'title',
+            'media',
+            'url',
+          ]);
+          if (titleMediaControl) {
+            titleMediaControl.setValue(fileUrl);
+          } else {
+            console.error('Media control for title not found.');
+          }
         }
       });
     }
@@ -102,7 +122,7 @@ export class TimelineFormComponent implements OnInit {
     // Submit the formatted timeline
     this.http.post('/api/timelines', formattedTimeline).subscribe({
       next: (response: any) => {
-        console.log('Timeline saved successfully:', response.id);
+        this.timelineCreated.emit({ id: response.id, ...formattedTimeline });
       },
       error: (err) => {
         console.error('Error saving timeline:', err);

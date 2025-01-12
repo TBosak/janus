@@ -4,6 +4,14 @@
   gap: 1rem;
 }
 
+#timeline-embed-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
 #timeline-embed,
 #tabs-container {
   flex: 1 1 100%;
@@ -16,8 +24,17 @@
   }
 
   #timeline-embed,
+  #timeline-embed-placeholder,
   #tabs-container {
     flex: 1;
     height: 100vh;
+  }
+}
+
+@media (max-width: 767px) {
+  #timeline-embed,
+  #timeline-embed-placeholder,
+  #tabs-container {
+    max-width: 100vw;
   }
 }

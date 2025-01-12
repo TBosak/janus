@@ -1,7 +1,8 @@
+<h2 class="p-4 pb-2" style="text-align: center">Your Journey</h2>
 <form [formGroup]="timelineForm" class="mat-elevation-z2" style="padding: 1rem">
   <!-- Title Section -->
   <mat-expansion-panel>
-    <mat-expansion-panel-header>Timeline Title</mat-expansion-panel-header>
+    <mat-expansion-panel-header>Title</mat-expansion-panel-header>
     <div formGroupName="title">
       <!-- Title Text -->
       <div
@@ -18,44 +19,48 @@
           <textarea matInput rows="3" formControlName="text"></textarea>
         </mat-form-field>
       </div>
-    </div>
-    <!-- Title Media -->
-    <div
-      formGroupName="media"
-      style="display: flex; gap: 1rem; flex-wrap: wrap"
-    >
-      <mat-form-field appearance="fill">
-        <mat-label>Media URL</mat-label>
-        <input matInput formControlName="url" />
-      </mat-form-field>
+      <!-- Title Media -->
+      <div
+        formGroupName="media"
+        style="display: flex; gap: 1rem; flex-wrap: wrap"
+      >
+        <mat-form-field appearance="fill">
+          <mat-label>Media URL</mat-label>
+          <input matInput formControlName="url" />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Caption</mat-label>
-        <input matInput formControlName="caption" />
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Caption</mat-label>
+          <input matInput formControlName="caption" />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Credit</mat-label>
-        <input matInput formControlName="credit" />
-      </mat-form-field>
-      <b>OR</b>
-      <button (click)="uploadFile.click()" mat-raised-button color="primary">
-        Upload Media
-      </button>
-      <input
-        id="fileUpload-title"
-        #uploadFile
-        (change)="onFileUpload($event, -1)"
-        type="file"
-        style="display: none"
-      />
+        <mat-form-field appearance="fill">
+          <mat-label>Credit</mat-label>
+          <input matInput formControlName="credit" />
+        </mat-form-field>
+        <button
+          (click)="uploadTitleFile.click()"
+          mat-raised-button
+          color="primary"
+        >
+          Upload Media
+        </button>
+        <input
+          id="fileUpload-title"
+          #uploadTitleFile
+          (change)="onFileUpload($event, -1)"
+          [(ngModel)]="titleUrl"
+          type="file"
+          style="display: none"
+        />
+      </div>
     </div>
   </mat-expansion-panel>
 
   <hr style="margin: 1rem 0" />
 
   <!-- Events Array -->
-  <h3>
+  <h3 style="text-align: center">
     Events
     <button mat-icon-button color="primary" type="button" (click)="addEvent()">
       <mat-icon>add</mat-icon>
@@ -135,7 +140,6 @@
           <mat-label>Credit</mat-label>
           <input matInput formControlName="credit" />
         </mat-form-field>
-        <b>OR</b>
         <button (click)="uploadFile.click()" mat-raised-button color="primary">
           Upload Media
         </button>

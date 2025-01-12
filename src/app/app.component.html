@@ -1,5 +1,13 @@
 <div class="responsive-container">
-  <div id="timeline-embed"></div>
+  <div [hidden]="!(timeline | async)" id="timeline-embed"></div>
+  <div *ngIf="!(timeline | async)" id="timeline-embed-placeholder">
+    <img height="25%" width="25%" src="janus.svg" />
+    <h1>Janus</h1>
+    <p>
+      Janus is a tool for visualizing transitions and transformations via
+      interactive timelines.
+    </p>
+  </div>
   <app-tabs-container
     id="tabs-container"
     (selectedJourney)="applyJourney($event)"

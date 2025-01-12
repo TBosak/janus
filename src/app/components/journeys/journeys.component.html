@@ -1,6 +1,7 @@
+<h2 class="p-4 pb-2" style="text-align: center">Journeys</h2>
 <mat-accordion multi>
   <!-- Outer Accordion: Each Timeline -->
-  <mat-expansion-panel *ngFor="let timeline of journeys; let i = index">
+  <mat-expansion-panel *ngFor="let timeline of journeys | async; let i = index">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ timeline.title.text.headline }}
@@ -25,8 +26,7 @@
         mat-icon-button
         color="warn"
         matTooltip="Delete this timeline"
-        (click)="confirmDelete(timeline.id, i, $event)"
-        (click)="$event.stopPropagation()"
+        (click)="confirmDelete(timeline.id, $event)"
       >
         <mat-icon>delete</mat-icon>
       </button>
@@ -38,7 +38,7 @@
         <img
           [src]="timeline.title.media.url"
           alt="Timeline media"
-          style="max-width: 100%; margin-bottom: 1rem"
+          style="max-width: 10em; max-height: 10em; margin-bottom: 1rem"
         />
         <p>{{ timeline.title.media.caption }}</p>
         <small [innerHTML]="timeline.title.media.credit"></small>
@@ -46,6 +46,7 @@
     </div>
 
     <!-- Inner Accordion: Timeline Events -->
+    <h4 style="text-align: center">Events</h4>
     <mat-accordion multi>
       <mat-expansion-panel *ngFor="let event of timeline.events">
         <mat-expansion-panel-header>
@@ -53,7 +54,7 @@
             {{ event.text.headline }}
           </mat-panel-title>
           <mat-panel-description>
-            {{ event.start_date.year }}
+            {{ event.formattedDateRange }}
           </mat-panel-description>
         </mat-expansion-panel-header>
 
@@ -64,10 +65,14 @@
             <img
               [src]="event.media.url"
               alt="Event media"
-              style="max-width: 100%; margin-bottom: 1rem"
+              style="max-height: 10em; max-width: 10em; margin-bottom: 1rem"
             />
-            <p>{{ event.media.caption }}</p>
-            <small [innerHTML]="event.media.credit"></small>
+            <p *ngIf="event.media.caption">
+              Caption: {{ event.media.caption }}
+            </p>
+            <small *ngIf="event.media.credit"
+              >Credit: {{ event.media.credit }}</small
+            >
           </div>
         </div>
       </mat-expansion-panel>
